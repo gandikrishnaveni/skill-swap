@@ -1,0 +1,38 @@
+<!-- collaborators.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Find Collaborators - GRIET Connect</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h2>Find Collaborators</h2>
+  <div id="users-container"></div>
+
+  <script>
+    async function fetchUsers() {
+      const res = await fetch("/api/users");
+      const data = await res.json();
+      const container = document.getElementById("users-container");
+
+      container.innerHTML = data.map(user => `
+        <div class="card">
+          <h3>${user.name}</h3>
+          <p>Skills: ${user.skills.join(", ")}</p>
+          <button onclick="viewProfile('${user._id}')">View Profile</button>
+        </div>
+      `).join("");
+    }
+
+    async function viewProfile(userId) {
+      const res = await fetch(`/api/users/${userId}`);
+      const user = await res.json();
+      alert(`Name: ${user.name}\nSkills: ${user.skills.join(", ")}\nAbout: ${user.about}`);
+      // Optionally show modal with full profile
+    }
+
+    fetchUsers();
+  </script>
+</body>
+</html>

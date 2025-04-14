@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat with Peers - GRIET Connect</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .chat-container {
+      display: flex;
+      height: 90vh;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .user-list {
+      width: 25%;
+      background: #f1f1f1;
+      overflow-y: auto;
+      padding: 1rem;
+      border-right: 1px solid #ccc;
+    }
+
+    .user {
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .user:hover {
+      background: #e0e0e0;
+    }
+
+    .chat-box {
+      width: 75%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      background: #fff;
+    }
+
+    .message {
+      margin-bottom: 10px;
+    }
+
+    .message.you {
+      text-align: right;
+      color: green;
+    }
+
+    .message.them {
+      text-align: left;
+      color: black;
+    }
+
+    .input-box {
+      display: flex;
+      padding: 1rem;
+      border-top: 1px solid #ccc;
+    }
+
+    .input-box input {
+      flex: 1;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .input-box button {
+      margin-left: 10px;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: none;
+      background-color: #0f766e;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center;">Chat with Peers</h2>
+
+  <div class="chat-container">
+    <div class="user-list" id="userList">
+      <!-- Connected users will be loaded here -->
+    </div>
+
+    <div class="chat-box">
+      <div class="messages" id="messages"></div>
+      <div class="input-box">
+        <input type="text" id="messageInput" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const userList = document.getElementById("userList");
+    const messages = document.getElementById("messages");
+    const messageInput = document.getElementById("messageInput");
+
+    let selectedUser = null;
+    let socket;
+
+    async function loadConnectedUsers() {
+      const res = await fetch("/api/connections", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      const data = await res.json();
+      data.users.forEach((user) => {
+        const div = document.createElement("div");
+        div.className = "user";
+        div.textContent = user.name;
+        div.onclick = () => openChat(user._id, user.name);
+        userList.appendChild(div);
+      });
+    }
+
+    function openChat(userId, userName) {
+      selectedUser = userId;
+      messages.innerHTML = `<h4>Chat with ${userName}</h4>`;
+      connectSocket(userId);
+    }
+
+    function connectSocket(peerId) {
+      if (socket) socket.disconnect();
+
+      socket = io(); // Requires socket.io on frontend
+      socket.emit("join", { peerId });
+
+      socket.on("message", (msg) => {
+        const div = document.createElement("div");
+        div.className = "message them";
+        div.textContent = msg.text;
+        messages.appendChild(div);
+        messages.scrollTop = messages.scrollHeight;
+      });
+    }
+
+    function sendMessage() {
+      const text = messageInput.value.trim();
+      if (text && socket && selectedUser) {
+        socket.emit("message", {
+          to: selectedUser,
+          text,
+        });
+
+        const div = document.createElement("div");
+        div.className = "message you";
+        div.textContent = text;
+        messages.appendChild(div);
+        messages.scrollTop = messages.scrollHeight;
+
+        messageInput.value = "";
+      }
+    }
+
+    loadConnectedUsers();
+  </script>
+
+  <!-- Include socket.io client -->
+  <script src="/socket.io/socket.io.js"></script>
+</body>
+</html>
+

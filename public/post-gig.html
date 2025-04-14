@@ -1,0 +1,48 @@
+<!-- post-gig.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Post a Gig - GRIET Connect</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h2>Post Your Gig</h2>
+  <form id="gigForm" enctype="multipart/form-data">
+    <input type="text" name="title" placeholder="Title" required />
+    <textarea name="description" placeholder="Describe your gig" required></textarea>
+    <input type="text" name="skills" placeholder="Skills (comma-separated)" required />
+    <input type="text" name="category" placeholder="Category" required />
+    
+    <label for="images">Upload Image:</label>
+    <input type="file" name="images" accept="image/*" multiple />
+
+    <label for="attachments">Attach Files:</label>
+    <input type="file" name="attachments" multiple />
+
+    <button type="submit">Post Gig</button>
+  </form>
+
+  <script>
+    document.getElementById("gigForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const form = document.getElementById("gigForm");
+      const formData = new FormData(form);
+
+      const res = await fetch("/api/gigs", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        },
+        body: formData
+      });
+
+      const result = await res.json();
+      alert(result.message || "Gig posted!");
+    });
+  </script>
+</body>
+</html>
+
+

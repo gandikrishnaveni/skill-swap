@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - GRIET Connect</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+    }
+
+    header {
+      background: #0d47a1;
+      padding: 20px;
+      color: white;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #0d47a1;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .stat {
+      background: #e3f2fd;
+      padding: 20px;
+      margin: 10px;
+      border-radius: 8px;
+      text-align: center;
+      width: 200px;
+    }
+
+    .stat h3 {
+      margin-bottom: 10px;
+      color: #0d47a1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to Your Dashboard</h1>
+  </header>
+
+  <div class="container">
+    <h2>Overview</h2>
+    <div class="stats">
+      <div class="stat">
+        <h3>Services</h3>
+        <p id="servicesCount">Loading...</p>
+      </div>
+      <div class="stat">
+        <h3>Projects</h3>
+        <p id="projectsCount">Loading...</p>
+      </div>
+      <div class="stat">
+        <h3>Collaborators</h3>
+        <p id="collaboratorsCount">Loading...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function loadDashboard() {
+      const [services, projects, collaborators] = await Promise.all([
+        fetch('/api/services').then(res => res.json()),
+        fetch('/api/projects').then(res => res.json()),
+        fetch('/api/collaborators').then(res => res.json())
+      ]);
+
+      document.getElementById('servicesCount').textContent = services.length;
+      document.getElementById('projectsCount').textContent = projects.length;
+      document.getElementById('collaboratorsCount').textContent = collaborators.length;
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>

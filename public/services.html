@@ -1,0 +1,42 @@
+<!-- services.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Services - GRIET Connect</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h2>Available Services</h2>
+  <select id="filter">
+    <option value="">All</option>
+    <option value="Web Development">Web Development</option>
+    <option value="App Development">App Development</option>
+    <option value="Graphic Design">Graphic Design</option>
+    <option value="AI/ML Projects">AI/ML Projects</option>
+    <option value="Resume Building">Resume Building</option>
+  </select>
+  <div id="services-container"></div>
+
+  <script>
+    async function fetchServices(category = "") {
+      const res = await fetch(`/api/services${category ? "?category=" + category : ""}`);
+      const data = await res.json();
+      const container = document.getElementById("services-container");
+      container.innerHTML = data.map(s => `
+        <div class="card">
+          <h3>${s.title}</h3>
+          <p>${s.description}</p>
+          <p><strong>Category:</strong> ${s.category}</p>
+        </div>
+      `).join("");
+    }
+
+    document.getElementById("filter").addEventListener("change", (e) => {
+      fetchServices(e.target.value);
+    });
+
+    fetchServices();
+  </script>
+</body>
+</html>
