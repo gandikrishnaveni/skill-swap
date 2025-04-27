@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Coders - GRIET Connect</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .modal-header {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .modal-body {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 5px 0;
+    }
+
+    /* Profile Layout */
+    .profile {
+      display: flex;
+      margin: 20px 0;
+    }
+
+    .profile img {
+      max-width: 100px;
+      max-height: 100px;
+      object-fit: cover;
+      margin-right: 20px;
+    }
+
+    .info {
+      flex-grow: 1;
+    }
+
+    .info h4 {
+      margin: 0 0 10px 0;
+    }
+
+    .connect-btn {
+      margin-top: 10px;
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .connect-btn:disabled {
+      background-color: gray;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="Grietconnectlogobg.png" alt="GRIET Connect Logo" class="logo" />
+      <h2>GRIET Connect - Find Coders</h2>
+    </div>
+    <input type="text" id="skillFilter" class="filter" placeholder="Search by skill..." onkeyup="filterProfiles()" />
+
+    <div id="profiles">
+      <!-- Coder Profiles -->
+      <div class="profile" data-skills="Java, Python, Coding" data-payment="free" onclick="openModal(this)">
+        <img src="Vasavi.jpg" alt="Profile Pic" />
+        <div class="info">
+          <h4>Boosathi Vasavi</h4>
+          <p>Email: BoosathiVasavi@grietcollege.com</p>
+          <p>Skills: Java, Python, Coding</p>
+          <p class="payment free">Free Member</p>
+          <button class="connect-btn" onclick="connectRequest(this)">Connect</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div class="modal-header">User Projects</div>
+      <div class="modal-body" id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    function filterProfiles() {
+      let input = document.getElementById('skillFilter').value.toLowerCase();
+      let profiles = document.querySelectorAll('.profile');
+
+      profiles.forEach(profile => {
+        let skills = profile.getAttribute('data-skills').toLowerCase();
+        if (skills.includes(input)) {
+          profile.style.display = "flex";
+        } else {
+          profile.style.display = "none";
+        }
+      });
+    }
+
+    function connectRequest(button) {
+      button.innerText = "Requested";
+      button.disabled = true;
+      alert("Connect request sent!");
+    }
+
+    // Modal functions
+    function openModal(profile) {
+      let modal = document.getElementById('profileModal');
+      let modalContent = document.getElementById('modalContent');
+
+      // Fetching profile data
+      let name = profile.querySelector('h4').innerText;
+      let skills = profile.getAttribute('data-skills');
+      let email = profile.querySelector('p').innerText;
+
+      // Displaying the modal
+      modalContent.innerHTML = `
+        <h3>${name}</h3>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Skills:</strong> ${skills}</p>
+        <h4>Projects</h4>
+        <ul>
+          <li>Project 1: Coding with Java</li>
+          <li>Project 2: Python Automation</li>
+          <li>Project 3: Full Stack Development</li>
+        </ul>
+      `;
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      let modal = document.getElementById('profileModal');
+      modal.style.display = "none";
+    }
+  </script>
+</body>
+</html>
+

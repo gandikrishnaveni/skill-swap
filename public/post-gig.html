@@ -1,48 +1,141 @@
-<!-- post-gig.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Post a Gig - GRIET Connect</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post a Project to Collaborate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styling */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #f8f8f8;
+      padding: 50px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: #004a80;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    form {
+      background-color: white;
+      padding: 40px;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    input[type="file"] {
+      padding: 10px 0;
+      font-size: 1rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    button {
+      background-color: #004a80;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0060b0;
+    }
+
+    label {
+      font-size: 1.1rem;
+      color: #333;
+      margin-top: 15px;
+      display: block;
+      text-align: left;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body {
+        padding: 30px 10px;
+      }
+
+      form {
+        padding: 30px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h2>Post Your Gig</h2>
-  <form id="gigForm" enctype="multipart/form-data">
-    <input type="text" name="title" placeholder="Title" required />
-    <textarea name="description" placeholder="Describe your gig" required></textarea>
-    <input type="text" name="skills" placeholder="Skills (comma-separated)" required />
-    <input type="text" name="category" placeholder="Category" required />
-    
-    <label for="images">Upload Image:</label>
-    <input type="file" name="images" accept="image/*" multiple />
+  <div>
+    <h2>Post a Project to Collaborate</h2>
+    <form id="gigForm" enctype="multipart/form-data">
+      <div class="form-group">
+        <input type="text" id="title" name="title" placeholder="Gig Title" required />
+      </div>
 
-    <label for="attachments">Attach Files:</label>
-    <input type="file" name="attachments" multiple />
+      <div class="form-group">
+        <textarea id="description" name="description" placeholder="Describe your gig" required></textarea>
+      </div>
 
-    <button type="submit">Post Gig</button>
-  </form>
+      <div class="form-group">
+        <select id="category" name="category" required>
+          <option value="web">Web Development</option>
+          <option value="app">App Development</option>
+          <option value="design">Design</option>
+          <option value="Cv">CV</option>
+          <option value="Editing">Editing</option>
+          <!-- Add more categories here -->
+        </select>
+      </div>
 
-  <script>
-    document.getElementById("gigForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+      <div class="form-group">
+        <label for="image">Upload an Image:</label>
+        <input type="file" id="image" name="photo" accept="image/*" required />
+      </div>
 
-      const form = document.getElementById("gigForm");
-      const formData = new FormData(form);
+      <div class="form-group">
+        <button type="submit">Post Gig</button>
+      </div>
+    </form>
+  </div>
 
-      const res = await fetch("/api/gigs", {
-        method: "POST",
-        headers: {
-          "Authorization": "Bearer " + localStorage.getItem("token")
-        },
-        body: formData
-      });
-
-      const result = await res.json();
-      alert(result.message || "Gig posted!");
-    });
-  </script>
+  <script src="js/post-gig.js"></script>
 </body>
 </html>
+
 
 

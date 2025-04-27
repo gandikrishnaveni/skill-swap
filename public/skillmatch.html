@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillMatch</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your stylesheet -->
+</head>
+<style>
+    /* General Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Header Styling */
+header {
+    background-color: #0b60b5;
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
+
+h1 {
+    margin: 0;
+}
+
+/* Container for Users List */
+#users-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Styling for Individual User Cards */
+.user-profile {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: calc(33% - 20px); /* 3 items per row on large screens */
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.user-profile:hover {
+    transform: translateY(-5px); /* Subtle hover effect */
+}
+
+/* Profile Photo Styling */
+.profile-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* User Name Styling */
+.user-card h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 10px 0;
+}
+
+/* Skills and Match Percentage Styling */
+.user-card p {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Connect Button Styling */
+.connect-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.connect-btn:hover {
+    background-color: #45a049;
+}
+
+/* Responsive Design for Smaller Screens */
+@media screen and (max-width: 768px) {
+    .user-profile {
+        width: calc(50% - 20px); /* 2 items per row on medium screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .user-profile {
+        width: 100%; /* 1 item per row on small screens */
+    }
+}
+
+</style>
+<body>
+    <header>
+        <h1>SkillMatch</h1>
+    </header>
+    
+    <div id="users-list"></div> <!-- Users will be displayed here -->
+
+    <script>
+        // Fetch the users with matching skills
+        async function fetchSkillMatch() {
+            try {
+                const response = await fetch('/api/skillmatch', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                // Check if the response is not OK
+                if (!response.ok) {
+                    const errorMessage = await response.text(); // Get the error page or message
+                    console.error('Error fetching matching users:', errorMessage);
+                    alert('Error fetching matching users: ' + errorMessage); // Show a user-friendly error
+                    return;
+                }
+
+                const users = await response.json();
+                if (Array.isArray(users)) {
+                    displayUsers(users);
+                }
+            } catch (err) {
+                console.error('Error fetching matching users:', err);
+            }
+        }
+
+        // Function to display matching users on the page
+        function displayUsers(users) {
+            const usersListDiv = document.getElementById('users-list');
+            usersListDiv.innerHTML = ''; // Clear any existing content
+
+            users.forEach((user, index) => {
+                const userDiv = document.createElement('div');
+                userDiv.classList.add('user-profile');
+
+                userDiv.innerHTML = `
+    <div class="user-rank">${index + 1}. ${user.name}</div>
+    <img src="${user.profilePhoto || '/default-profile.png'}" alt="${user.name}'s profile photo" class="profile-photo">
+    <p><strong>Skills:</strong> ${user.skills.join(', ')}</p>
+    <button class="connect-btn" data-user-id="${user._id}">Connect</button>
+`;
+
+
+                
+                // Attach connect button click event
+                userDiv.querySelector('.connect-btn').addEventListener('click', () => {
+                    handleConnectRequest(user._id);
+                });
+
+                usersListDiv.appendChild(userDiv);
+            });
+        }
+
+        // Function to handle the connect button click
+       // In the frontend JavaScript
+async function handleConnectRequest(userId) {
+    try {
+        const response = await fetch(`/api/connect/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+
+        // Parse the JSON response
+        const result = await response.json();
+        
+        if (response.ok) {
+            alert(result.message); // Display success message
+        } else {
+            alert('Error: ' + result.message); // Display error message
+        }
+    } catch (err) {
+        console.error('Error sending connection request:', err);
+        alert('An error occurred while sending the connection request.');
+    }
+}
+
+
+        // Fetch skill matches when the page loads
+        document.addEventListener('DOMContentLoaded', fetchSkillMatch);
+    </script>
+</body>
+</html>
+
+
+

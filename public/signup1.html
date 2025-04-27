@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - GRIET Connect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        /* Ribbon */
+        .top-ribbon {
+            background-color: #769fcc;
+            color: white;
+            display: flex;
+            align-items: center;  
+            justify-content: space-between;
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .top-ribbon img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        .ribbon-text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%); /* Centers text */
+        }
+        /* Centering Signup Box */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+        .signup-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+        .signup-container h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .input-field, .select-field {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .signup-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .signup-btn {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Ribbon -->
+    <div class="top-ribbon">
+        <img src="skillswap.jpg" alt="Skill" height="60" width="60"> 
+        <span class="ribbon-text">Skill Swap</span>
+    </div>
+
+    <div class="container">
+        <div class="signup-container">
+            <h2>Sign Up</h2>
+            <form>
+                <input type="text" class="input-field" id="fullName" placeholder="Full Name" required>
+                <input type="email" id="email" class="input-field" placeholder="Email" required>
+                <input type="password" id="password" class="input-field" placeholder="Password" required>
+
+                <select class="select-field" id="gender" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <input type="text" id="skills" class="input-field" placeholder="Skills (comma separated)" required>
+
+                <select class="select-field" id="profileType" required>
+                    <option value="" disabled selected>Profile Type</option>
+                    <option value="Free">Free</option>
+                    <option value="Paid">Paid</option>
+                </select>
+
+                <input type="checkbox" id="checkbox"> Open to Connect
+
+                <button type="submit" class="signup-btn">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+<script>
+  document.querySelector("form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("fullName").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const gender = document.getElementById("gender").value;
+    const skills = document.getElementById("skills").value;
+    const profileType = document.getElementById("profileType").value;
+    const openToConnect = document.getElementById("checkbox").checked;
+
+    // Ensure profileType is converted into a boolean (true for "Paid", false for "Free")
+    const isPaidProfile = profileType === "Paid";  // True if Paid, False if Free
+
+    if (!email.endsWith("@grietcollege.com")) {
+      alert("Only @grietcollege.com emails allowed");
+      return;
+    }
+
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        gender,
+        skills: skills.split(",").map(s => s.trim()),
+        paid: isPaidProfile,  // Use the boolean value
+        openToConnect
+      })
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert("Signup successful! Redirecting to login...");
+      window.location.href = "index.html"; // Or wherever your login page is
+    } else {
+      alert(data.message || "Signup failed.");
+    }
+  });
+</script>
+
+</body>
+</html>

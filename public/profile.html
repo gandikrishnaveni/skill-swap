@@ -1,0 +1,69 @@
+<!-- ✅ PROFILE HEADER (Reusable across all pages) -->
+<div class="profile-bar">
+    <img src="/default-avatar.png" alt="Profile Icon" class="profile-icon" onclick="toggleProfileMenu()" />
+    <div id="profile-dropdown" class="profile-dropdown">
+      <div class="profile-info">
+        <p id="dropdown-name">Name</p>
+        <p id="dropdown-email">email@example.com</p>
+      </div>
+      <hr />
+      <button onclick="window.location.href='dashboard.html'">Go to Dashboard</button>
+      <button onclick="window.location.href='edit-profile.html'">Edit Profile</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
+  
+  <style>
+    .profile-bar {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      z-index: 999;
+    }
+    .profile-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .profile-dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      width: 200px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 10px;
+    }
+    .profile-dropdown.show {
+      display: block;
+    }
+  </style>
+  
+  <script>
+    async function loadProfileInfo() {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:3000/api/user-details", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const user = await res.json();
+      document.getElementById("dropdown-name").innerText = user.name;
+      document.getElementById("dropdown-email").innerText = user.email;
+    }
+  
+    function toggleProfileMenu() {
+      const menu = document.getElementById("profile-dropdown");
+      menu.classList.toggle("show");
+    }
+  
+    function logout() {
+      localStorage.removeItem("token");
+      alert("Logged out successfully.");
+      window.location.href = "login.html";
+    }
+  
+    document.addEventListener("DOMContentLoaded", loadProfileInfo);
+  </script>

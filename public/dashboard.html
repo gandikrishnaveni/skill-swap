@@ -1,96 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - GRIET Connect</title>
+  <title>Dashboard </title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f5f7fa;
+      background-color: #eef2f7;
+      color: #333;
     }
 
     header {
       background: #0d47a1;
-      padding: 20px;
+      padding: 30px 20px;
       color: white;
       text-align: center;
+      font-size: 28px;
     }
 
     .container {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
     }
 
-    h2 {
-      color: #0d47a1;
-    }
-
-    .stats {
+    .profile-section {
       display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #0d47a1;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-info h3 {
+      margin: 0;
+      color: #0d47a1;
+      font-size: 24px;
+    }
+
+    .profile-info p {
+      margin: 6px 0;
+    }
+
+    .edit-btn {
+      padding: 6px 14px;
+      font-size: 14px;
+      margin-top: 8px;
+      background-color: #0d47a1;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .edit-btn:hover {
+      background-color: #1565c0;
+    }
+
+    .section {
       margin-top: 30px;
     }
 
-    .stat {
-      background: #e3f2fd;
-      padding: 20px;
-      margin: 10px;
-      border-radius: 8px;
-      text-align: center;
-      width: 200px;
+    .section-title {
+      font-size: 20px;
+      color: #0d47a1;
+      margin-bottom: 12px;
     }
 
-    .stat h3 {
-      margin-bottom: 10px;
+    .card-preview {
+      background: #f8f9fc;
+      border: 1px solid #dce3ed;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      padding: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .card-preview strong {
+      display: block;
+      font-size: 17px;
+      margin-bottom: 6px;
       color: #0d47a1;
     }
+
+    .message-btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 18px;
+      background-color: #0d47a1;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    .message-btn:hover {
+      background-color: #1565c0;
+    }
+
+    .bottom-buttons {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .bottom-buttons button {
+      padding: 10px 20px;
+      font-size: 15px;
+      background-color: #0d47a1;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .bottom-buttons button:hover {
+      background-color: #1565c0;
+    }
+    .modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 8px;
+}
+
+
+    .modal-content h3 {
+      margin-top: 0;
+      color: #0d47a1;
+    }
+
+    .modal-content input[type="text"],
+    .modal-content input[type="email"],
+    .modal-content input[type="file"] {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .modal-content button {
+      margin-top: 12px;
+      padding: 8px 14px;
+      background: #0d47a1;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .modal-content button:hover {
+      background: #1565c0;
+    }
+
   </style>
 </head>
 <body>
   <header>
-    <h1>Welcome to Your Dashboard</h1>
+    Welcome to Your Dashboard
   </header>
+  
+    <div class="container">
+      <div class="profile-section">
+        <img src="https://dummyimage.com/120x120/000/fff" alt="Placeholder Image" class="profile-pic" id="profile-photo"/>
+        <div class="profile-info">
+          <h3 id="userName"></h3>
+          <p id="userEmail">krishnaveni23241a0586@grietcollege.com</p>
+          <p><strong>Skills:</strong> <span id="userSkills">Web Development, Editing</span></p>
+          <button class="edit-btn" onclick="editProfile()">Edit Profile</button>
+          <button class="edit-btn" onclick="uploadPhoto()">Change Photo</button>
+        </div>
+      </div>
+      <div class="container">
+        <h2>Your Notifications</h2>
+        <div id="notification-list"></div>
+      </div>
+      
+  
+      <div class="section">
+        <h3 class="section-title">Projects</h3>
+        <div id="projects-list">
+          <!-- Add New Project -->
+     <div style="margin-top: 20px;">
+        <h4>Add a New Project</h4>
+      <input type="text" id="projectName" placeholder="Project Name" style="width: 100%; margin: 6px 0; padding: 10px;" />
+        <textarea id="projectDescription" placeholder="Project Description" style="width: 100%; margin: 6px 0; padding: 10px;"></textarea>
+        <input type="text" id="projectLink" placeholder="Project Link (e.g., GitHub)" style="width: 100%; margin: 6px 0; padding: 10px;" />
+           <button onclick="addProject()" class="edit-btn" style="margin-top: 10px;">Add Project</button>
+        </div>
 
-  <div class="container">
-    <h2>Overview</h2>
-    <div class="stats">
-      <div class="stat">
-        <h3>Services</h3>
-        <p id="servicesCount">Loading...</p>
+        </div>
       </div>
-      <div class="stat">
-        <h3>Projects</h3>
-        <p id="projectsCount">Loading...</p>
-      </div>
-      <div class="stat">
-        <h3>Collaborators</h3>
-        <p id="collaboratorsCount">Loading...</p>
+  
+      <div class="bottom-buttons">
+        <button onclick="window.location.href='homi.html'">Go to Home Page</button>
+        <button onclick="window.location.href='index.html'">Logout</button>
       </div>
     </div>
-  </div>
-
-  <script>
-    async function loadDashboard() {
-      const [services, projects, collaborators] = await Promise.all([
-        fetch('/api/services').then(res => res.json()),
-        fetch('/api/projects').then(res => res.json()),
-        fetch('/api/collaborators').then(res => res.json())
-      ]);
-
-      document.getElementById('servicesCount').textContent = services.length;
-      document.getElementById('projectsCount').textContent = projects.length;
-      document.getElementById('collaboratorsCount').textContent = collaborators.length;
-    }
-
-    loadDashboard();
-  </script>
-</body>
-</html>
+  
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="editProfileModal">
+      <div class="modal-content">
+        <h3>Edit Profile</h3>
+        <input type="text" id="editName" placeholder="Your Name"/>
+        <input type="email" id="editEmail" placeholder="Your Email"/>
+        <input type="text" id="editSkills" placeholder="Your Skills (comma separated)"/>
+        <button onclick="saveProfile()">Save</button>
+        <button onclick="closeModal('editProfileModal')">Cancel</button>
+      </div>
+    </div>
+  
+    <!-- Upload Photo Modal -->
+    <div class="modal" id="uploadPhotoModal">
+      <div class="modal-content">
+        <h3>Upload New Profile Photo</h3>
+        <input type="file" id="photoInput"/>
+        <button onclick="uploadProfilePhoto()">Upload</button>
+        <button onclick="closeModal('uploadPhotoModal')">Cancel</button>
+      </div>
+    </div>
+  
+    <script src="js/dashboard.js"></script>
+  </body>
+  </html>

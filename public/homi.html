@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #0d47a1;
+      padding: 20px 50px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    .hero-section {
+      padding: 255px 100px;
+      background: url('skillswaphome.jpg') center/cover no-repeat;
+      text-align: center;
+      color: white;
+    }
+
+    .hero-section h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .hero-section p {
+      font-size: 18px;
+      color: #4496c3;
+      
+    }
+
+    .search-bar {
+      margin: 30px auto;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-bar input {
+      padding: 12px;
+      width: 300px;
+      border: 2px solid #0d47a1;
+      border-radius: 5px;
+    }
+
+    .search-bar button {
+      padding: 12px 20px;
+      background-color: #0d47a1;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .category-card {
+      padding: 20px;
+      background: #f1f1f1;
+      border-radius: 12px;
+      width: 200px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: #333;
+      transition: 0.3s ease;
+    }
+
+    .category-card:hover {
+      background: #e3f2fd;
+      transform: translateY(-5px);
+    }
+
+    .active-button {
+      background-color: #0d47a1;
+      color: white;
+    }
+
+    .features {
+      padding: 40px 20px;
+      background-color: #f9f9f9;
+    }
+
+    .features h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .feature {
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    .feature h3 {
+      color: #0d47a1;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      background-color: #0d47a1;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .search-bar input {
+        width: 100%;
+      }
+    }
+    .profile-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid white;
+}
+
+.profile-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Skill Swap</div>
+    <nav>
+      <ul>
+        
+        <li><a href="marketplace.html">Marketplace</a></li>
+        <li><a href="post-gig.html">Post a Service</a></li>
+        <li><a href="manage-projects.html">My Ongoing Projects</a></li>
+        <li><a href="chat.html">Messages</a></li>
+        <div class="profile-icon" onclick="window.location.href='dashboard.html'">
+          <img id="profilePic" src="/default-profile-photo.jpg" alt="Profile Photo" width="100" height="100">
+        </div>
+        
+        
+      </ul>
+      
+      
+    </nav>
+   
+  </header>
+
+  <section class="hero-section">
+    <h1>Welcome to SkillSwap</h1>
+    <p>Showcase your skills, collaborate, and get hired .</p>
+  </section>
+
+  <!-- <div class="search-bar">
+    <input type="text" id="serviceSearch" placeholder="Search for services..." oninput="highlightCategories()">
+  </div>
+
+  <div class="categories">
+    <a href="web.html" class="category-card" id="webDevBtn">Web Development</a>
+    <a href="coding.html" class="category-card" id="codingBtn">Coding Help</a>
+    <a href="editing.html" class="category-card" id="editingBtn">Editing</a>
+  </div> -->
+
+  <section class="features">
+    <h2>What You Can Do on SkillSwap</h2>
+    
+    <div class="feature-grid">
+      <div class="feature">
+        <h3><a href="skillmatch.html">Skill match</a></h3>
+        <p>Find People with Same Skills.</p>
+      </div>
+      <div class="feature">
+        <h3><a href="post-gig.html">Post & Browse Gigs</a></h3>
+        <p>Find freelance work or offer services to fellow students.</p>
+      </div>
+      <!-- <div class="feature">
+        <h3><a href="chat.html">Message and Collaborate</a></h3>
+
+        <p>Connect instantly with peers and build something great together.</p>
+      </div> -->
+      <div class="feature">
+        <h3><a href="manage-projects.html">Track Services</a></h3>
+        <p>Manage your service timeline and status easily.</p>
+      </div>
+      <div class="feature find-collab">
+        <h3><a href="find-collaboraters.html">Find Collaborators</a></h3>
+        <p>Connect with talented people and build something legendary.</p>
+      </div>
+      <div class="feature">
+        <h3><a href="chat.html">Message and Collaborate</a></h3>
+
+        <p>Connect instantly with peers and build something great together.</p>
+      </div>
+<!--       
+      <div class="feature">
+        <h3><a href="skillmatch.html">Skill match</a></h3>
+        <p>Find People with Same Skills.</p>
+      </div> -->
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; Built with ❤️ .</p>
+  </footer>
+
+  <script>
+    function highlightCategories() {
+      // Get the input value and convert to lowercase
+      const query = document.getElementById('serviceSearch').value.toLowerCase();
+
+      // Get all category buttons
+      const categories = document.querySelectorAll('.category-card');
+
+      categories.forEach(button => {
+        // Check if the button text includes the query text
+        if (button.textContent.toLowerCase().includes(query)) {
+          button.classList.add('active-button'); // Add the class if it matches
+        } else {
+          button.classList.remove('active-button'); // Remove the class if no match
+        }
+      });
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.warn("No token found in localStorage.");
+    return;
+  }
+
+  // Find the profile photo element first
+  const profilePicElement = document.getElementById('profilePic');
+  if (!profilePicElement) {
+    console.error('Profile photo element not found.');
+    return;
+  }
+
+  // Fetch user data from backend
+  fetch('http://localhost:3000/api/me', {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("Failed to fetch profile");
+    return res.json();
+  })
+  .then(user => {
+    console.log("User info loaded:", user);
+
+    // Check if the user has a profile photo
+    if (user.profilePhoto) {
+      // If profile photo exists, set the image
+      if (user.profilePhoto.startsWith('http')) {
+        profilePicElement.src = user.profilePhoto;
+      } else {
+        profilePicElement.src = `http://localhost:3000${user.profilePhoto}`;
+      }
+    } else {
+      console.warn("No profile photo found in user data. Using default.");
+      profilePicElement.src = '/default-profile-photo.jpg'; // Default photo
+    }
+  })
+  .catch(err => {
+    console.error("Error fetching profile:", err);
+  });
+});
+
+ 
+    
+  </script>
+</body>
+</html>
+
+
+

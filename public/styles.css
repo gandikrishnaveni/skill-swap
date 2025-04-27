@@ -53,5 +53,404 @@ body {
   form button:hover {
     background-color: #4338ca;
   }
+  .project-card {
+    display: flex;
+    gap: 1rem;
+    background: #f4f4f4;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    align-items: center;
+  }
   
+  .project-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
   
+  .project-info {
+    flex: 1;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    margin-right: 0.5rem;
+    padding: 0.4rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .edit-btn {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+
+.logo {
+    width: 70px;  
+    height: auto;
+}
+
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+.profile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+}
+.profile img {
+    width: 90x;  /* Increased from 50px */
+    height: 90px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.info {
+    flex: 1;
+}
+.payment {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.paid {
+    color: white;
+    background-color: #0073b1;
+}
+.free {
+    color: black;
+    background-color: #ccc;
+}
+.connect-btn {
+    background-color: #0073b1;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.connect-btn:hover {
+    background-color: #005582;
+}
+.filter {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.logout-btn {
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  background-color: #0d47a1;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #1565c0;
+}
+/* Notification styles */
+#notification-section {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+.notification {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.notification a {
+  color: #0d47a1;
+  text-decoration: none;
+}
+
+.notification button {
+  background-color: #0d47a1;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.notification button:hover {
+  background-color: #0a3c74;
+}
+/* In your CSS file */
+.profile-photo {
+  width: 500px; /* You can adjust this value */
+  height: 500px; /* Keep the aspect ratio or adjust as needed */
+  border-radius: 50%; /* Optional: To make it circular */
+  object-fit: cover; /* Ensures the photo covers the space without stretching */
+}
+.service-img {
+  width: 400px !important; /* Force the width */
+  height: auto !important; /* Force the height */
+  object-fit: cover !important; /* Optional: Ensures the image fits */
+}
+#projects-list {
+  border: 2px dashed red; /* Temporarily add a border */
+  background-color: #f1f1f1; /* Temporary background */
+}
+
+
+.project-card, .edit-btn, .delete-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+}.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  animation: fadeIn 0.3s ease-in-out;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.modal-body {
+  font-size: 1rem;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #333;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: white;
+  margin-top: 4px;
+}
+
+.badge.free {
+  background-color: #4CAF50; /* green */
+}
+
+.badge.paid {
+  background-color: #f44336; /* red */
+}
+.badge:hover {
+  filter: brightness(1.1);
+  cursor: default;
+}
+.feature.find-collab {
+  grid-column: 1 / -1; /* Span the full row */
+  background: linear-gradient(135deg, #0d47a1, #42a5f5);
+  color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.feature.find-collab:hover {
+  transform: scale(1.08);
+}
+
+.feature.find-collab h3 a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+@media (min-width: 768px) {
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Set fixed 3-column layout */
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .feature.find-collab {
+    grid-column: 2 / 3; /* Center it in the middle column */
+  }
+}
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f7fc;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #2d3e50;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 36px;
+}
+
+.users-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Card styles */
+.user-card {
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-5px);
+}
+
+.user-rank {
+  background-color: #2d3e50;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+}
+
+.user-info {
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+}
+
+.profile-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-details {
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+.user-name {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+}
+
+button.connect-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button.connect-btn:hover {
+  background-color: #45a049;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .user-info {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .user-details {
+      margin-left: 0;
+      text-align: center;
+  }
+}
+

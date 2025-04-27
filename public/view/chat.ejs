@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GRIET Connect - Chat</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .chat-container {
+      display: flex;
+      height: 90vh;
+    }
+    .user-list {
+      width: 25%;
+      border-right: 1px solid #ccc;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .chat-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+    }
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+    }
+    .input-box {
+      display: flex;
+    }
+    .input-box input {
+      flex: 1;
+      padding: 0.5rem;
+      margin-right: 0.5rem;
+    }
+    .message.you {
+      text-align: right;
+      background-color: #e0ffe0;
+      margin-bottom: 5px;
+      padding: 5px;
+      border-radius: 5px;
+    }
+    .message.them {
+      text-align: left;
+      background-color: #f0f0f0;
+      margin-bottom: 5px;
+      padding: 5px;
+      border-radius: 5px;
+    }
+    .user {
+      cursor: pointer;
+      padding: 8px;
+      margin-bottom: 5px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+    }
+    .user.active {
+      background-color: #d1e7ff;
+    }
+  </style>
+</head>
+<body>
+  <!-- Hidden user ID field for chat.js -->
+  <input type="hidden" id="user-id" value="<%= user._id %>" />
+
+  <div class="chat-container">
+    <!-- Left User List -->
+    <div class="user-list" id="userList">
+      <!-- Connected users will be loaded here -->
+    </div>
+
+    <!-- Right Chat Box -->
+    <div class="chat-box">
+      <div class="messages" id="messages-container">
+        <!-- Messages will appear here -->
+      </div>
+      <div class="input-box">
+        <input type="text" id="message-input" placeholder="Type a message..." />
+        <button id="message-button">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/chat.js"></script>
+
+</body>
+</html>

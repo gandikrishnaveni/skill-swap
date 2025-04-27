@@ -1,99 +1,106 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-      const res = await fetch('/api/projects', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include'
-      });
-  
-      const data = await res.json();
-  
-      if (res.ok) {
-        const projectsList = document.getElementById('projects-list');
-        projectsList.innerHTML = '';
-  
-        data.projects.forEach(project => {
-          const projectCard = document.createElement('div');
-          projectCard.classList.add('project-card');
-          
-          projectCard.innerHTML = `
-            <div class="project-info">
-              <h3>${project.title}</h3>
-              <p>${project.description}</p>
-              <p>Status: ${project.status}</p>
-              <button class="view-project-btn" data-id="${project._id}">View Project</button>
-              <button class="update-project-btn" data-id="${project._id}">Update Status</button>
-              <button class="delete-project-btn" data-id="${project._id}">Delete Project</button>
-            </div>
-          `;
-  
-          projectsList.appendChild(projectCard);
-        });
-  
-        // Event listeners for action buttons
-        document.querySelectorAll('.view-project-btn').forEach(button => {
-          button.addEventListener('click', (e) => {
-            const projectId = e.target.getAttribute('data-id');
-            window.location.href = `/project-details.html?id=${projectId}`;
-          });
-        });
-  
-        document.querySelectorAll('.update-project-btn').forEach(button => {
-          button.addEventListener('click', async (e) => {
-            const projectId = e.target.getAttribute('data-id');
-            const newStatus = prompt('Enter new project status:');
-            
-            if (newStatus) {
-              const updateRes = await fetch(`/api/projects/${projectId}`, {
-                method: 'PUT',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ status: newStatus }),
-                credentials: 'include'
-              });
-  
-              const updateData = await updateRes.json();
-              if (updateRes.ok) {
-                alert('Project status updated!');
-                location.reload(); // Refresh the page to show updated status
-              } else {
-                alert(`Error: ${updateData.message}`);
-              }
-            }
-          });
-        });
-  
-        document.querySelectorAll('.delete-project-btn').forEach(button => {
-          button.addEventListener('click', async (e) => {
-            const projectId = e.target.getAttribute('data-id');
-  
-            const deleteRes = await fetch(`/api/projects/${projectId}`, {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              credentials: 'include'
-            });
-  
-            const deleteData = await deleteRes.json();
-            if (deleteRes.ok) {
-              alert('Project deleted!');
-              location.reload(); // Refresh the page to remove the deleted project
-            } else {
-              alert(`Error: ${deleteData.message}`);
-            }
-          });
-        });
-  
-      } else {
-        alert('Failed to fetch projects');
-      }
-    } catch (err) {
-      console.error('Error fetching projects:', err);
-      alert('Something went wrong.');
+document.addEventListener('DOMContentLoaded', () => {
+  const serviceContainer = document.getElementById('service-container');
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    return (serviceContainer.innerHTML = "<p>Please log in to view your services.</p>");
+  }
+
+  // Fetching the user's services
+  fetch('/api/services/my', {
+    headers: {
+      'Authorization': `Bearer ${token}`
     }
-  });
+  })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Failed to fetch services. Status: ' + res.status);
+      }
+      return res.json();
+    })
+    .then(services => {
+      if (!services || services.length === 0) {
+        addServiceCard({
+          title: 'No Services Yet',
+          description: 'Once you create services, they will show up here.',
+          image: 'https://placekitten.com/100/100',
+          _id: 'default'
+        });
+      } else {
+        services.forEach(service => {
+          console.log('Service Image:', service.image); // Log the image URL
+          addServiceCard(service);
+        });
+      }
+    })
+    .catch(err => {
+      console.error('Error fetching services:', err);
+      addServiceCard({
+        title: 'Sample Service',
+        description: 'Could not fetch real services. This is a placeholder.',
+        image: 'https://placekitten.com/100/100',
+        _id: 'default'
+      });
+    });
+
+  // Function to create service cards and display them
+  function addServiceCard(service) {
+    const card = document.createElement('div');
+    card.className = 'service-card';
+    card.innerHTML = `
+      <img src="${service.photo || 'https://placekitten.com/100/100'}" alt="${service.title}" class="service-img" >
+      <div class="service-info">
+        <h3>${service.title}</h3>
+        <p>${service.description}</p>
+        ${service._id !== 'default' ? `
+          <button class="delete-btn" data-id="${service._id}">Delete</button>
+        ` : ''}
+      </div>
+    `;
+    serviceContainer.appendChild(card);
+
+    if (service._id !== 'default') {
+      // Adding the delete button functionality
+      card.querySelector('.delete-btn').addEventListener('click', () => {
+        if (confirm('Are you sure you want to delete this service?')) {
+          deleteService(service._id, card);
+        }
+      });
+    }
+  }
+
+  function deleteService(serviceId, card) {
+    const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
+    
+    if (!token) {
+      alert('You must be logged in to delete a service.');
+      return;
+    }
   
+    fetch(`/api/services/${serviceId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json' // Ensure the server expects this content type
+      }
+    })
+    .then(res => {
+      if (res.ok) {
+        // Successfully deleted, remove the card from the UI
+        card.remove();
+        alert('Service deleted successfully!');
+      } else {
+        // Handle the error response
+        return res.json().then(data => {
+          throw new Error(data.error || 'Failed to delete service.');
+        });
+      }
+    })
+    .catch(err => {
+      console.error('Error deleting service:', err);
+      alert('Error deleting the service: ' + err.message);
+    });
+  }
+  
+});
+

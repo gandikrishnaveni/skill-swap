@@ -1,38 +1,233 @@
-<!-- collaborators.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Find Collaborators - GRIET Connect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Collaborators </title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Reset basic margins */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f7f9fc;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Container for all cards */
+#collaborators-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Individual card */
+.collaborator-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.collaborator-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+}
+
+.collaborator-info {
+  text-align: center;
+}
+
+.collaborator-info h3 {
+  margin: 10px 0 5px;
+  font-size: 20px;
+  color: #333;
+}
+
+.collaborator-info p {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+/* Profile images with flair */
+.profile-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #6a67ce;
+  box-shadow: 0 0 8px rgba(106, 103, 206, 0.5);
+}
+
+/* Connect button */
+.connect-btn {
+  background-color: #6a67ce;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.connect-btn:hover {
+  background-color: #5c57ba;
+}
+
+
+  </style>
 </head>
 <body>
-  <h2>Find Collaborators</h2>
-  <div id="users-container"></div>
+  <div class="container">
+    <div class="header">
+      <img src="skillswap.jpg" alt="Skill" class="logo" />
+      <h2> Find Collaborators</h2>
+    </div>
+    <input type="text" id="skillFilter" class="filter" placeholder="Search by skill..." onkeyup="filterProfiles()" />
+
+    <div id="collaborators-list"></div>
+  </div>
+
+  <!-- Modal -->
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div class="modal-header">User Projects</div>
+      <div class="modal-body" id="modalContent"></div>
+    </div>
+  </div>
 
   <script>
-    async function fetchUsers() {
-      const res = await fetch("/api/users");
+    document.addEventListener('DOMContentLoaded', async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Please login again');
+      window.location.href = 'login.html';
+      return;
+    }
+
+    try {
+      const res = await fetch('http://localhost:3000/api/collaborators', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,  // ✅ Correct header format
+        },
+      });
+
       const data = await res.json();
-      const container = document.getElementById("users-container");
 
-      container.innerHTML = data.map(user => `
-        <div class="card">
-          <h3>${user.name}</h3>
-          <p>Skills: ${user.skills.join(", ")}</p>
-          <button onclick="viewProfile('${user._id}')">View Profile</button>
-        </div>
-      `).join("");
+      if (!res.ok) {
+        alert(data.error || 'Failed to fetch collaborators');
+        return;
+      }
+
+      // Now render collaborators
+      const collaboratorsList = document.getElementById('collaborators-list');
+      collaboratorsList.innerHTML = ''; // Clear previous content
+
+      data.collaborators.forEach(collaborator => {
+        const collaboratorCard = document.createElement('div');
+        collaboratorCard.classList.add('collaborator-card');
+        collaboratorCard.innerHTML = `
+          <div class="collaborator-info">
+         <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(collaborator.name || 'User')}&size=90&background=random" class="profile-img" />
+
+
+
+            <h3>${collaborator.name}</h3>
+            <p>${collaborator.skills.join(', ')}</p>
+            <button class="connect-btn" data-id="${collaborator._id}">Connect</button>
+          </div>
+        `;
+        collaboratorsList.appendChild(collaboratorCard);
+      });
+
+    } catch (err) {
+      console.error('Fetch error:', err);
+      alert('Something went wrong fetching collaborators');
+    }
+  });
+
+    function filterProfiles() {
+      let input = document.getElementById('skillFilter').value.toLowerCase();
+      let profiles = document.querySelectorAll('.profile');
+
+      profiles.forEach(profile => {
+        let skills = profile.getAttribute('data-skills').toLowerCase();
+        if (skills.includes(input)) {
+          profile.style.display = "block"; /* Adjusted for block display */
+        } else {
+          profile.style.display = "none";
+        }
+      });
     }
 
-    async function viewProfile(userId) {
-      const res = await fetch(`/api/users/${userId}`);
-      const user = await res.json();
-      alert(`Name: ${user.name}\nSkills: ${user.skills.join(", ")}\nAbout: ${user.about}`);
-      // Optionally show modal with full profile
+    async function connectRequest(button) {
+      const targetId = button.getAttribute('data-id');
+
+      try {
+        const res = await fetch(`/api/collaborators/connect/${targetId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          button.innerText = "Requested";
+          button.disabled = true;
+          alert(data.message || "Connect request sent!");
+        } else {
+          alert(data.message || "Request failed.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong.");
+      }
     }
 
-    fetchUsers();
+    // Modal functions
+    function openModal(profile) {
+      let modal = document.getElementById('profileModal');
+      let modalContent = document.getElementById('modalContent');
+
+      // Fetching profile data
+      let name = profile.querySelector('h4').innerText;
+      let skills = profile.getAttribute('data-skills');
+      let email = profile.querySelector('p').innerText;
+
+      // Displaying the modal
+      modalContent.innerHTML = `
+        <h3>${name}</h3>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Skills:</strong> ${skills}</p>
+        <h4>Projects</h4>
+        <ul>
+          <li>Project 1: Machine Learning Model</li>
+          <li>Project 2: Data Science Research Paper</li>
+          <li>Project 3: AI-based Chatbot</li>
+        </ul>
+      `;
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      let modal = document.getElementById('profileModal');
+      modal.style.display = "none";
+    }
   </script>
+  <script src="js/find-collaboraters.js"></script>
+
 </body>
 </html>
+
+
+
+
+

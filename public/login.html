@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            position: relative;
+        }
+         /* Ribbon */
+         .top-ribbon {
+    background-color: #769fcc;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content:space-between; /* Centers everything */
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 30px;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.top-ribbon img {
+    height: 50px;
+    margin-right: 10px;
+}
+
+.ribbon-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);  /* Adjust spacing */
+}
+
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 320px;
+            text-align: center;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .forgot-password {
+            display: block;
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 15px;
+        }
+        .forgot-password a {
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        .login-btn {
+            background: #007bff;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s ease-in-out;
+        }
+        .login-btn:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+        .signup-link {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .signup-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+     <!-- Top Ribbon -->
+     <div class="top-ribbon">
+        <img src="skillswap.jpg" alt="SkillSwap"  height="60" width="60"> 
+        <span class="ribbon-text">Skill Swap</span>
+    </div>
+    <div class="login-container">
+        <h2>Welcome Back !</h2>
+        <form>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required oninput="clearError()">
+                <p class="error" id="email-error"></p>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <div class="forgot-password">
+               
+            </div>
+            
+            <button type="submit" class="login-btn">Login</button>
+            
+        </form>
+        <p class="signup-link">Don't have an account? <a href="/signup">Sign Up</a></p>
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', async (event) => {
+          event.preventDefault();
+          console.log("Login form submitted"); 
+      
+          const email = document.getElementById('email').value;
+          const password = document.getElementById('password').value;
+      
+         
+      
+          try {
+            const response = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+});
+
+            const data = await response.json();
+            if (response.ok) {
+              localStorage.setItem("token", data.token); // ✅ Add this
+              window.location.href = '/homi.html';
+            } else {
+              alert(data.message);
+            }
+          } catch (err) {
+            console.error(err);
+            alert('Something went wrong. Please try again.');
+          }
+        });
+      </script>
+      
+</body>
+</html>

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Marketplace - GRIET Connect</title>
+  <title>Marketplace</title>
+  <link rel="stylesheet" href="styles.css" />
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -47,38 +48,35 @@
       font-size: 14px;
       color: #444;
     }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .card button {
+      background-color: #0d47a1;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+ 
   </style>
 </head>
 <body>
   <header>
-    <h1>Explore Services</h1>
+    <h1>Work Together on Exciting Projects </h1>
   </header>
 
   <div class="container">
-    <div class="grid" id="serviceGrid">
-      <!-- Services will be injected here -->
-    </div>
+    <div id="service-list" class="grid"></div>
   </div>
 
-  <script>
-    async function loadServices() {
-      const res = await fetch('/api/services');
-      const services = await res.json();
-
-      const grid = document.getElementById('serviceGrid');
-      services.forEach(service => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <h3>${service.title}</h3>
-          <p><strong>By:</strong> ${service.userName}</p>
-          <p>${service.description}</p>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    loadServices();
-  </script>
+  <script src="js/marketplace.js"></script>
 </body>
 </html>
+
